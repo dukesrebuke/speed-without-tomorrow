@@ -59,7 +59,7 @@ export default function SiteNav() {
           )}
           {!user && (
             <Link 
-              href="/signin"
+              href="/login"
               className="text-sm text-stone-600 hover:text-stone-900 transition"
             >
               Sign In
