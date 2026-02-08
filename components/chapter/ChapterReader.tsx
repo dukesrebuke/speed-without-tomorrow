@@ -26,18 +26,15 @@ export default function ChapterReader({ cards, moduleTitle, moduleNumber, module
   const card = cards[idx]
   const supabase = createClient()
   
-  // Get current user
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       if (user) {
-        // Load saved progress
         loadProgress(user.id)
       }
     })
   }, [])
 
-  // Load user's last position
   const loadProgress = async (userId: string) => {
     const { data } = await supabase
       .from('user_progress')
@@ -52,7 +49,6 @@ export default function ChapterReader({ cards, moduleTitle, moduleNumber, module
     }
   }
 
-  // Save progress when card changes
   useEffect(() => {
     if (!user || !card) return
 
@@ -77,12 +73,9 @@ export default function ChapterReader({ cards, moduleTitle, moduleNumber, module
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <header className="border-b border-stone-200 bg-white sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex justify-between mb-2">
-            <Link href="/dashboard" className="text-sm text-stone-600 hover:text-stone-900">
-              ← Dashboard
-            </Link>
+      <div className="bg-white border-b border-stone-200 py-6">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex justify-end mb-2">
             <p className="text-sm text-stone-500">
               Section {idx + 1} of {cards.length}
             </p>
@@ -90,7 +83,7 @@ export default function ChapterReader({ cards, moduleTitle, moduleNumber, module
           <p className="text-xs text-stone-500 mb-1">Chapter {moduleNumber}</p>
           <h1 className="text-lg font-serif text-stone-900">{moduleTitle}</h1>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-3xl mx-auto px-6 py-16">
         <SectionCard title={card.title || undefined}>

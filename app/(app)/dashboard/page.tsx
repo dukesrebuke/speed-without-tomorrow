@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import type { Module } from '@/types/database'
-import SignOutButton from '@/components/auth/SignOutButton'
 
 export default async function Dashboard() {
   const supabase = await createClient()
@@ -25,19 +24,6 @@ export default async function Dashboard() {
   return (
     <main className="min-h-screen bg-stone-50">
       <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="flex justify-between items-center mb-12">
-          <Link href="/" className="text-sm text-stone-600 hover:text-stone-900">
-            ← Home
-          </Link>
-          
-          {user && (
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-stone-600">{user.email}</span>
-              <SignOutButton />
-            </div>
-          )}
-        </div>
-
         <h1 className="text-4xl font-serif mb-4 text-stone-900">Speed Without Tomorrow</h1>
         <p className="text-lg text-stone-600 mb-16">Choose your path</p>
 

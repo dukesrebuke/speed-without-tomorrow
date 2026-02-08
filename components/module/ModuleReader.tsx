@@ -19,18 +19,15 @@ export default function ModuleReader({
   const card = cards[idx]
   const supabase = createClient()
   
-  // Get current user
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       if (user) {
-        // Load saved progress
         loadProgress(user.id)
       }
     })
   }, [])
 
-  // Load user's last position
   const loadProgress = async (userId: string) => {
     const { data } = await supabase
       .from('user_progress')
@@ -45,7 +42,6 @@ export default function ModuleReader({
     }
   }
 
-  // Save progress when card changes
   useEffect(() => {
     if (!user || !card) return
 
@@ -70,12 +66,9 @@ export default function ModuleReader({
 
   return (
     <div className="min-h-screen bg-stone-50">
-      <header className="border-b border-stone-200 bg-white sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex justify-between mb-2">
-            <Link href="/dashboard" className="text-sm text-stone-600 hover:text-stone-900">
-              ← Dashboard
-            </Link>
+      <div className="bg-white border-b border-stone-200 py-6">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex justify-end mb-2">
             <p className="text-sm text-stone-500">
               Card {idx + 1} of {cards.length}
             </p>
@@ -83,7 +76,7 @@ export default function ModuleReader({
           <p className="text-xs text-stone-500 mb-1">Module {module.module_number}</p>
           <h1 className="text-lg font-serif text-stone-900">{module.title}</h1>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-2xl mx-auto px-4 py-16">
         <article className="bg-white border border-stone-200 rounded-lg p-12 shadow-sm min-h-[400px]">
