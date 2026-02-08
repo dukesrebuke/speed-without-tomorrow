@@ -1,44 +1,98 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import type { Module } from '@/types/database'
+import SignOutButton from '@/components/auth/SignOutButton'
 
 export default async function Dashboard() {
   const supabase = await createClient()
   
-  const { data: modules } = await supabase
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  const { data: maModules } = await supabase
     .from('modules')
     .select('*')
     .eq('status', 'published')
+    .eq('reading_path', 'mythic-acceleration')
+    .order('module_number')
+
+  const { data: sufrimientoChapters } = await supabase
+    .from('modules')
+    .select('*')
+    .eq('status', 'published')
+    .eq('reading_path', 'sufrimiento')
     .order('module_number')
 
   return (
     <main className="min-h-screen bg-stone-50">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <Link href="/" className="text-sm text-stone-600 hover:text-stone-900 mb-8 inline-block">
-          ← Home
-        </Link>
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="flex justify-between items-center mb-12">
+          <Link href="/" className="text-sm text-stone-600 hover:text-stone-900">
+            ← Home
+          </Link>
+          
+          {user && (
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-stone-600">{user.email}</span>
+              <SignOutButton />
+            </div>
+          )}
+        </div>
 
-        <h1 className="text-3xl font-serif mb-12 text-stone-900">Modules</h1>
-        
-        <div className="space-y-4">
-          {modules?.map((m: Module) => (
-            <Link
-              key={m.id}
-              href={`/module/${m.slug}`}
-              className="block p-6 bg-white border border-stone-200 rounded-lg hover:shadow-lg transition"
-            >
-              <div className="flex items-baseline gap-3 mb-2">
-                <span className="text-sm text-stone-500">
-                  Module {m.module_number}
-                </span>
-                <h2 className="text-xl font-serif text-stone-900">{m.title}</h2>
-              </div>
-              
-              {m.description && (
-                <p className="text-stone-700 text-sm leading-relaxed">{m.description}</p>
-              )}
-            </Link>
-          ))}
+        <h1 className="text-4xl font-serif mb-4 text-stone-900">Speed Without Tomorrow</h1>
+        <p className="text-lg text-stone-600 mb-16">Choose your path</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-serif text-stone-900 mb-2">Mythic Acceleration</h2>
+              <p className="text-stone-600 text-sm">Diagnostic. Analytical. Sharp.</p>
+            </div>
+            
+            <div className="space-y-3">
+              {maModules?.map((m: Module) => (
+                <Link
+                  key={m.id}
+                  href={`/module/${m.slug}`}
+                  className="block p-4 bg-white border border-stone-200 rounded hover:shadow-md transition"
+                >
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-xs text-stone-500">Module {m.module_number}</span>
+                    <h3 className="text-base font-serif text-stone-900">{m.title}</h3>
+                  </div>
+                  {m.description && (
+                    <p className="text-stone-600 text-xs line-clamp-2">{m.description}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-serif text-stone-900 mb-2">Sufrimiento</h2>
+              <p className="text-stone-600 text-sm">Contemplative. Reflective. Slow.</p>
+            </div>
+            
+            <div className="space-y-3">
+              {sufrimientoChapters?.map((m: Module) => (
+                <Link
+                  key={m.id}
+                  href={`/chapter/${m.slug}`}
+                  className="block p-4 bg-white border border-stone-200 rounded hover:shadow-md transition"
+                >
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-xs text-stone-500">Chapter {m.module_number}</span>
+                    <h3 className="text-base font-serif text-stone-900">{m.title}</h3>
+                  </div>
+                  {m.description && (
+                    <p className="text-stone-600 text-xs line-clamp-2">{m.description}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </main>
