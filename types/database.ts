@@ -6,6 +6,7 @@ export interface Module {
   description: string | null
   estimated_reading_minutes: number | null
   status: 'draft' | 'published' | 'archived'
+  reading_path: string
   created_at: string
   updated_at: string
 }
@@ -28,6 +29,19 @@ export interface Concept {
   long_explanation: string | null
   related_thinkers: string[] | null
   status: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Practice {
+  id: string
+  module_id: string
+  order_index: number
+  title: string
+  practice_type: 'meditation' | 'writing' | 'observation' | 'dialogue' | 'embodied' | 'creative' | 'study'
+  instructions: string
+  duration_minutes: number | null
+  reflection_prompt: string | null
   created_at: string
   updated_at: string
 }

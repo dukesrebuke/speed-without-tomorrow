@@ -117,6 +117,15 @@ export default function ModuleReader({
           )}
         </div>
 
+        <div className="mt-8 text-center">
+          <Link
+            href={`/practice/${module.slug}`}
+            className="inline-block px-6 py-3 bg-stone-100 border border-stone-300 rounded hover:bg-stone-200 transition text-stone-900 font-medium"
+          >
+            View Practices for this Module
+          </Link>
+        </div>
+
         {concepts.length > 0 && (
           <aside className="mt-16 p-6 bg-stone-100 rounded-lg">
             <h3 className="font-serif text-lg mb-4 text-stone-900">Key Concepts</h3>
