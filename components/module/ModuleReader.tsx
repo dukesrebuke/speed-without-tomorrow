@@ -1,17 +1,20 @@
+cat > components/module/ModuleReader.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import type { Module, EssayCard, Concept } from '@/types/database'
+import type { Module, EssayCard, Concept, Practice } from '@/types/database'
 
 export default function ModuleReader({ 
   module, 
-  cards, 
+  cards,
+  practices,
   concepts 
 }: { 
   module: Module
   cards: EssayCard[]
+  practices: Practice[]
   concepts: Concept[] 
 }) {
   const [idx, setIdx] = useState(0)
@@ -117,14 +120,16 @@ export default function ModuleReader({
           )}
         </div>
 
-        <div className="mt-8 text-center">
-          <Link
-            href={`/practice/${module.slug}`}
-            className="inline-block px-6 py-3 bg-stone-100 border border-stone-300 rounded hover:bg-stone-200 transition text-stone-900 font-medium"
-          >
-            View Practices for this Module
-          </Link>
-        </div>
+        {practices.length > 0 && (
+          <div className="mt-8 text-center">
+            <Link
+              href={`/practice/${module.slug}`}
+              className="inline-block px-6 py-3 bg-stone-100 border border-stone-300 rounded hover:bg-stone-200 transition text-stone-900 font-medium"
+            >
+              View Practices for this Module ({practices.length})
+            </Link>
+          </div>
+        )}
 
         {concepts.length > 0 && (
           <aside className="mt-16 p-6 bg-stone-100 rounded-lg">
