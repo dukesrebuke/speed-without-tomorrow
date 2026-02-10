@@ -20,18 +20,11 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     .eq('module_id', module.id)
     .order('order_index')
 
-  const { data: practices } = await supabase
+  const { data: practices, error: practicesError } = await supabase
     .from('practices')
     .select('*')
     .eq('module_id', module.id)
     .order('order_index')
-
-  // Debug logging
-  console.log('🔍 Debug - Module slug:', slug)
-  console.log('🔍 Debug - Module ID:', module.id)
-  console.log('🔍 Debug - Module reading_path:', module.reading_path)
-  console.log('🔍 Debug - Practices fetched:', practices)
-  console.log('🔍 Debug - Practices count:', practices?.length)
 
   const { data: moduleConcepts } = await supabase
     .from('module_concepts')
@@ -39,6 +32,12 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     .eq('module_id', module.id)
 
   const concepts = moduleConcepts?.map((mc: any) => mc.concepts).filter(Boolean) || []
+
+  // This will show in Netlify function logs
+  if (practicesError) {
+    console.error('ERROR fetching practices:', practicesError)
+  }
+  console.log(`Module: ${slug} | Practices found: ${practices?.length ?? 0}`)
 
   return <ModuleReader module={module} cards={cards || []} practices={practices || []} concepts={concepts} />
 }
