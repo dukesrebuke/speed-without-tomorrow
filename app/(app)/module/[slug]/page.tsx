@@ -1,4 +1,3 @@
-cat > app/\(app\)/module/\[slug\]/page.tsx 
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ModuleReader from '@/components/module/ModuleReader'
@@ -26,6 +25,13 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     .select('*')
     .eq('module_id', module.id)
     .order('order_index')
+
+  // Debug logging
+  console.log('🔍 Debug - Module slug:', slug)
+  console.log('🔍 Debug - Module ID:', module.id)
+  console.log('🔍 Debug - Module reading_path:', module.reading_path)
+  console.log('🔍 Debug - Practices fetched:', practices)
+  console.log('🔍 Debug - Practices count:', practices?.length)
 
   const { data: moduleConcepts } = await supabase
     .from('module_concepts')

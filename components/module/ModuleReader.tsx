@@ -1,4 +1,3 @@
-cat > components/module/ModuleReader.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -21,6 +20,12 @@ export default function ModuleReader({
   const [user, setUser] = useState<any>(null)
   const card = cards[idx]
   const supabase = createClient()
+
+  // Debug logging
+  console.log('📖 ModuleReader - Module:', module.title)
+  console.log('📖 ModuleReader - Practices received:', practices)
+  console.log('📖 ModuleReader - Practices count:', practices?.length)
+  console.log('📖 ModuleReader - Practices array:', JSON.stringify(practices, null, 2))
   
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -120,16 +125,26 @@ export default function ModuleReader({
           )}
         </div>
 
-        {practices.length > 0 && (
-          <div className="mt-8 text-center">
+        {/* Debug: Always show this section to see what's happening */}
+        <div className="mt-8 text-center">
+          <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+            <p className="text-xs text-yellow-900">
+              DEBUG: practices.length = {practices?.length ?? 'undefined'} | 
+              practices array = {practices ? 'exists' : 'null/undefined'}
+            </p>
+          </div>
+          
+          {practices && practices.length > 0 ? (
             <Link
               href={`/practice/${module.slug}`}
               className="inline-block px-6 py-3 bg-stone-100 border border-stone-300 rounded hover:bg-stone-200 transition text-stone-900 font-medium"
             >
               View Practices for this Module ({practices.length})
             </Link>
-          </div>
-        )}
+          ) : (
+            <p className="text-sm text-stone-500">No practices available for this module</p>
+          )}
+        </div>
 
         {concepts.length > 0 && (
           <aside className="mt-16 p-6 bg-stone-100 rounded-lg">
