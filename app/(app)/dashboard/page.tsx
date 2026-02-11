@@ -56,7 +56,7 @@ export default async function Dashboard() {
 
           <div>
             <div className="mb-6">
-              <h2 className="text-2xl font-serif text-stone-900 mb-2">Sufrimiento</h2>
+              <h2 className="text-2xl font-serif text-stone-900 mb-2">Sufrimiento/Suffering</h2>
               <p className="text-stone-600 text-sm"></p>
             </div>
             
