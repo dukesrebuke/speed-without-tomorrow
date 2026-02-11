@@ -32,7 +32,7 @@ export default async function Dashboard() {
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-serif text-stone-900 mb-2">Mythic Acceleration</h2>
-              <p className="text-stone-600 text-sm">Poltical Obeservatios & Philosophy</p>
+              <p className="text-stone-600 text-sm">Diagnostic. Analytical. Sharp.</p>
             </div>
             
             <div className="space-y-3">
@@ -56,8 +56,8 @@ export default async function Dashboard() {
 
           <div>
             <div className="mb-6">
-              <h2 className="text-2xl font-serif text-stone-900 mb-2">Sufrimiento/Suffering</h2>
-              <p className="text-stone-600 text-sm">Buddhist Philosophy</p>
+              <h2 className="text-2xl font-serif text-stone-900 mb-2">Sufrimiento</h2>
+              <p className="text-stone-600 text-sm">Contemplative. Reflective. Slow.</p>
             </div>
             
             <div className="space-y-3">
