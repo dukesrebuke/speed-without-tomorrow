@@ -1,10 +1,3 @@
-# Update Your Module Page to Include Concept Graph
-
-## Edit: `app/(app)/module/[slug]/page.tsx`
-
-Replace the entire file with this:
-
-```typescript
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ModuleReader from '@/components/module/ModuleReader'
@@ -14,7 +7,6 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
   const { slug } = await params
   const supabase = await createClient()
 
-  // Get the module by slug
   const { data: module } = await supabase
     .from('modules')
     .select('*')
@@ -24,21 +16,18 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
 
   if (!module) notFound()
 
-  // Get cards for this module
   const { data: cards } = await supabase
     .from('essay_cards')
     .select('*')
     .eq('module_id', module.id)
     .order('order_index')
 
-  // Get practices for this module
   const { data: practices } = await supabase
     .from('practices')
     .select('*')
     .eq('module_id', module.id)
     .order('order_index')
 
-  // Get concepts for this module
   const { data: moduleConcepts } = await supabase
     .from('module_concepts')
     .select('concept_id, concepts(*)')
@@ -46,7 +35,6 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
 
   const concepts = moduleConcepts?.map((mc: any) => mc.concepts).filter(Boolean) || []
 
-  // NEW: Get ALL concepts with their modules for ConceptGraph
   const { data: allModuleConcepts } = await supabase
     .from('module_concepts')
     .select(`
@@ -64,7 +52,6 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     `)
     .eq('modules.reading_path', module.reading_path)
 
-  // Group concepts by ID with all their modules
   const conceptsWithModules: any[] = []
   const conceptMap = new Map()
 
@@ -103,4 +90,3 @@ export default async function ModulePage({ params }: { params: Promise<{ slug: s
     </>
   )
 }
-```
